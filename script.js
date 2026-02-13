@@ -81,17 +81,45 @@ function openPlaylist() {
 }
 
 // Love Letter
-function openLetter() {
+function openMemories() {
   modal.style.display = "flex";
+
+  let images = [
+    "images/memory1.jpg",
+    "images/memory2.jpg",
+    "images/memory3.jpg",
+    "images/memory4.jpg",
+    "images/memory5.jpg",
+    "images/forever.jpg"
+  ];
+
+  let current = 0;
+
   modalContent.innerHTML = `
-    <div style="background:#f8f4ec;padding:2rem;font-family:'Playfair Display',serif;">
-      <h2 style="margin-bottom:1rem;">Papa 💙</h2>
-      <p>From that last school day walk… to today… you became my world slowly.</p>
-      <p>I may not be perfect. But one thing is true — Ena nadanthalum I can’t leave you.</p>
-      <p>When you cry, I break. When you smile, I feel complete.</p>
-      <p style="margin-top:1.5rem;">Forever yours,<br>Divakaran 💙</p>
+    <div style="position:relative; width:100%; text-align:center;">
+      <img id="memoryImage" 
+           src="${images[current]}" 
+           style="width:100%; border-radius:16px; transition:0.6s ease;">
+      <div style="margin-top:15px;">
+        <button onclick="prevMemory()">⬅</button>
+        <button onclick="nextMemory()">➡</button>
+      </div>
     </div>
   `;
+
+  window.nextMemory = function() {
+    if (current < images.length - 1) {
+      current++;
+      document.getElementById("memoryImage").src = images[current];
+    }
+  };
+
+  window.prevMemory = function() {
+    if (current > 0) {
+      current--;
+      document.getElementById("memoryImage").src = images[current];
+    }
+  };
 }
 
 // Memories (basic slider placeholder)
