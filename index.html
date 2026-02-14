@@ -8,7 +8,7 @@
 <style>
 body{
 margin:0;
-font-family:Poppins, sans-serif;
+font-family:Poppins,sans-serif;
 background:linear-gradient(160deg,#081a36,#0f2f66);
 overflow:hidden;
 color:white;
@@ -31,23 +31,26 @@ flex-direction:column;
 .active{display:flex;}
 
 button{
-padding:10px 20px;
+padding:12px 25px;
 border:none;
-border-radius:25px;
+border-radius:30px;
 background:#ff4d88;
 color:white;
 font-weight:bold;
 cursor:pointer;
 margin:10px;
+transition:0.3s;
 }
+button:hover{transform:scale(1.1);}
 
 .card{
 background:white;
 color:black;
 padding:30px;
-border-radius:20px;
+border-radius:24px;
 text-align:center;
 max-width:400px;
+box-shadow:0 20px 40px rgba(0,0,0,0.4);
 }
 
 /* Falling hearts */
@@ -58,12 +61,11 @@ to{transform:translateY(110vh);opacity:0;}
 /* Flip Card */
 .flip-card{
 background:transparent;
-width:200px;
-height:120px;
+width:220px;
+height:140px;
 perspective:1000px;
-margin:10px;
+margin:15px;
 }
-
 .flip-inner{
 position:relative;
 width:100%;
@@ -71,11 +73,9 @@ height:100%;
 transition:transform .8s;
 transform-style:preserve-3d;
 }
-
 .flip-card.flipped .flip-inner{
 transform:rotateY(180deg);
 }
-
 .flip-front,.flip-back{
 position:absolute;
 width:100%;
@@ -86,31 +86,40 @@ display:flex;
 align-items:center;
 justify-content:center;
 font-weight:bold;
-font-size:18px;
+font-size:20px;
 }
-
-.flip-front{background:#ff4d88;color:white;}
+.flip-front{
+background:#ff4d88;
+color:white;
+}
 .flip-back{
 background:white;
 color:black;
 transform:rotateY(180deg);
 }
 
-/* Overlay */
+/* Proposal Overlay */
 .overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,0,0.9);
 display:flex;
 align-items:center;
 justify-content:center;
 flex-direction:column;
 z-index:9999;
+font-size:2rem;
 text-align:center;
+animation:fadeIn 0.6s ease;
 }
+
+@keyframes fadeIn{
+from{opacity:0;transform:scale(0.8);}
+to{opacity:1;transform:scale(1);}
+}
+
 </style>
 </head>
-
 <body>
 
 <audio id="bgMusic" loop>
@@ -129,8 +138,8 @@ text-align:center;
 <!-- Screen 2 -->
 <div id="screen2" class="screen">
 <div class="card">
-<h2>See My Reasons 💗</h2>
-<button id="toGifts">Go To Gifts 🎁</button>
+<h2>You really said NO? 😏</h2>
+<button id="toGifts">Okay Fine… Continue 💕</button>
 </div>
 </div>
 
@@ -171,11 +180,11 @@ h.style.animation="fall 6s linear forwards";
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),6000);
 }
-setInterval(heart,800);
+setInterval(heart,700);
 
 /* Confetti */
 function confetti(){
-for(let i=0;i<60;i++){
+for(let i=0;i<80;i++){
 let c=document.createElement("div");
 c.style.position="fixed";
 c.style.width="8px";
@@ -195,7 +204,7 @@ setTimeout(()=>c.remove(),1200);
 }
 }
 
-/* Switch */
+/* Switch screen */
 function go(a,b){
 a.classList.remove("active");
 setTimeout(()=>b.classList.add("active"),600);
@@ -224,11 +233,13 @@ go(screen2,screen3);
 /* Flip Cards */
 const gifts=document.querySelectorAll(".gift");
 
+const giftNames=["Surprise 1 💕","Surprise 2 💖","Big Surprise 💍"];
+
 gifts.forEach((g,i)=>{
 g.innerHTML=`
 <div class="flip-card">
 <div class="flip-inner">
-<div class="flip-front">Gift ${i+1}</div>
+<div class="flip-front">${giftNames[i]}</div>
 <div class="flip-back">Open 💗</div>
 </div>
 </div>
@@ -236,12 +247,13 @@ g.innerHTML=`
 
 g.onclick=function(){
 g.querySelector(".flip-card").classList.toggle("flipped");
+
 setTimeout(()=>{
-if(i==0)alert("Playlist 💗");
-if(i==1)alert("Love Letter 💌");
 if(i==2){
 confetti();
 proposal();
+}else{
+alert("You opened "+giftNames[i]);
 }
 },800);
 }
@@ -251,7 +263,7 @@ proposal();
 function proposal(){
 let o=document.createElement("div");
 o.className="overlay";
-o.innerHTML="💍<h2>Will You Marry Me Papa?</h2>";
+o.innerHTML="💍<h2>Will You Marry Me Papa?</h2><p>Tap anywhere 💗</p>";
 document.body.appendChild(o);
 o.onclick=()=>o.remove();
 }
