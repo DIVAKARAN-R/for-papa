@@ -1,81 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Papa 💙</title>
 
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body{
+margin:0;
+font-family:Poppins, sans-serif;
+background:linear-gradient(160deg,#081a36,#0f2f66);
+overflow:hidden;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+
+/* Screens */
+.screen{
+position:absolute;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+}
+.active{display:flex;}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:25px;
+background:#ff4d88;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin:10px;
+}
+
+.card{
+background:white;
+color:black;
+padding:30px;
+border-radius:20px;
+text-align:center;
+max-width:400px;
+}
+
+/* Falling hearts */
+@keyframes fall{
+to{transform:translateY(110vh);opacity:0;}
+}
+
+/* Flip Card */
+.flip-card{
+background:transparent;
+width:200px;
+height:120px;
+perspective:1000px;
+margin:10px;
+}
+
+.flip-inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform .8s;
+transform-style:preserve-3d;
+}
+
+.flip-card.flipped .flip-inner{
+transform:rotateY(180deg);
+}
+
+.flip-front,.flip-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:18px;
+}
+
+.flip-front{background:#ff4d88;color:white;}
+.flip-back{
+background:white;
+color:black;
+transform:rotateY(180deg);
+}
+
+/* Overlay */
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.85);
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:9999;
+text-align:center;
+}
+</style>
 </head>
+
 <body>
 
-<!-- SCREEN 1 -->
-<section id="screen1" class="screen active">
-  <div class="card">
-    <h1>Papa… 💙</h1>
-    <h2>Will you be my Valentine?</h2>
+<audio id="bgMusic" loop>
+<source src="remo.mp3" type="audio/mpeg">
+</audio>
 
-    <div class="buttons">
-      <button id="yesBtn">YES 💙</button>
-      <button id="noBtn">NO 🙈</button>
-    </div>
-  </div>
-</section>
-
-<!-- SCREEN 2 -->
-<section id="screen2" class="screen">
-  <div class="card">
-    <h2>Why You Should Choose Me 💙</h2>
-
-    <div class="proscons">
-
-      <div class="cons">
-        <h3>Cons ❌</h3>
-        <p>
-          Appdey la onum illa... Google la thedanalum 
-          ena mari oru good boy unku kedikadhu 🫣
-        </p>
-        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" width="120">
-      </div>
-
-      <div class="pros">
-        <h3>Pros ✅</h3>
-        <ul>
-          <li>Unakaga vazha nenaikkiren 🥺💙</li>
-          <li>Enna nadanthalum Pennae unna vida maten 🫣</li>
-          <li>Gnyaairu madhiyam samayal unadhu 🧑‍🍳</li>
-          <li>Unakku vaakkapattu Varusanga pona enna ❤️</li>
-          <li>Un kangalil neer sindhinaal seththu pogiraen 🥹</li>
-        </ul>
-        <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif" width="120">
-      </div>
-
-    </div>
-
-    <button id="toGifts">See What I Made For You 🎁</button>
-  </div>
-</section>
-
-<!-- SCREEN 3 -->
-<section id="screen3" class="screen">
-  <div class="card">
-    <h2>For You Papa 💙</h2>
-
-    <div class="gift-container">
-      <div class="gift" onclick="openPlaylist()">🎵 Playlist</div>
-      <div class="gift" onclick="openLetter()">💌 Love Letter</div>
-      <div class="gift" onclick="openMemories()">📸 Memories</div>
-    </div>
-  </div>
-</section>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-content" id="modalContent"></div>
-  <span class="close" onclick="closeModal()">×</span>
+<!-- Screen 1 -->
+<div id="screen1" class="screen active">
+<div class="card">
+<h2>Will You Be My Valentine? 💙</h2>
+<button id="yesBtn">YES 💗</button>
+<button id="noBtn">NO 🙈</button>
+</div>
 </div>
 
-<script src="script.js"></script>
+<!-- Screen 2 -->
+<div id="screen2" class="screen">
+<div class="card">
+<h2>See My Reasons 💗</h2>
+<button id="toGifts">Go To Gifts 🎁</button>
+</div>
+</div>
+
+<!-- Screen 3 -->
+<div id="screen3" class="screen">
+<div style="display:flex;flex-wrap:wrap;justify-content:center;">
+<div class="gift"></div>
+<div class="gift"></div>
+<div class="gift"></div>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+
+const bgMusic=document.getElementById("bgMusic");
+document.body.addEventListener("click",()=>bgMusic.play(),{once:true});
+
+const screen1=document.getElementById("screen1");
+const screen2=document.getElementById("screen2");
+const screen3=document.getElementById("screen3");
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const toGifts=document.getElementById("toGifts");
+
+let noCount=0;
+
+/* Falling hearts */
+function heart(){
+let h=document.createElement("div");
+h.innerHTML="💗";
+h.style.position="fixed";
+h.style.top="-40px";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=Math.random()*20+20+"px";
+h.style.animation="fall 6s linear forwards";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+}
+setInterval(heart,800);
+
+/* Confetti */
+function confetti(){
+for(let i=0;i<60;i++){
+let c=document.createElement("div");
+c.style.position="fixed";
+c.style.width="8px";
+c.style.height="8px";
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+c.style.top="50%";
+c.style.left="50%";
+c.style.borderRadius="50%";
+document.body.appendChild(c);
+let angle=Math.random()*2*Math.PI;
+let dist=Math.random()*400;
+c.animate([
+{transform:"translate(0,0)"},
+{transform:`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px)`}
+],{duration:1200});
+setTimeout(()=>c.remove(),1200);
+}
+}
+
+/* Switch */
+function go(a,b){
+a.classList.remove("active");
+setTimeout(()=>b.classList.add("active"),600);
+}
+
+/* YES */
+yesBtn.onclick=function(){
+confetti();
+go(screen1,screen3);
+}
+
+/* NO */
+noBtn.onclick=function(){
+noCount++;
+if(noCount<3){
+noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+}else{
+go(screen1,screen2);
+}
+}
+
+toGifts.onclick=function(){
+go(screen2,screen3);
+}
+
+/* Flip Cards */
+const gifts=document.querySelectorAll(".gift");
+
+gifts.forEach((g,i)=>{
+g.innerHTML=`
+<div class="flip-card">
+<div class="flip-inner">
+<div class="flip-front">Gift ${i+1}</div>
+<div class="flip-back">Open 💗</div>
+</div>
+</div>
+`;
+
+g.onclick=function(){
+g.querySelector(".flip-card").classList.toggle("flipped");
+setTimeout(()=>{
+if(i==0)alert("Playlist 💗");
+if(i==1)alert("Love Letter 💌");
+if(i==2){
+confetti();
+proposal();
+}
+},800);
+}
+});
+
+/* Proposal */
+function proposal(){
+let o=document.createElement("div");
+o.className="overlay";
+o.innerHTML="💍<h2>Will You Marry Me Papa?</h2>";
+document.body.appendChild(o);
+o.onclick=()=>o.remove();
+}
+
+});
+</script>
+
 </body>
 </html>
