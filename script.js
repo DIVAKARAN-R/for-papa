@@ -20,7 +20,10 @@ function switchScreen(current, next) {
   }, 400);
 }
 
-// YES button logic
+/////////////////////////////////////////////////////
+// YES BUTTON
+/////////////////////////////////////////////////////
+
 yesBtn.addEventListener("click", () => {
   modal.style.display = "flex";
   modalContent.innerHTML = `
@@ -29,7 +32,10 @@ yesBtn.addEventListener("click", () => {
   `;
 });
 
-// NO button logic
+/////////////////////////////////////////////////////
+// NO BUTTON
+/////////////////////////////////////////////////////
+
 noBtn.addEventListener("click", () => {
   noClickCount++;
 
@@ -47,6 +53,10 @@ noBtn.addEventListener("click", () => {
   }
 });
 
+/////////////////////////////////////////////////////
+// NAVIGATION
+/////////////////////////////////////////////////////
+
 function goToPros() {
   modal.style.display = "none";
   switchScreen(screen1, screen2);
@@ -61,22 +71,26 @@ toGifts.addEventListener("click", () => {
   switchScreen(screen2, screen3);
 });
 
-// Modal close
+/////////////////////////////////////////////////////
+// MODAL CLOSE
+/////////////////////////////////////////////////////
+
 function closeModal() {
   modal.style.display = "none";
 }
 
 /////////////////////////////////////////////////////
-// PLAYLIST
+// SPOTIFY PLAYLIST
 /////////////////////////////////////////////////////
 
 function openPlaylist() {
   modal.style.display = "flex";
   modalContent.innerHTML = `
-    <h2>Our Song 💙</h2>
-    <iframe style="border-radius:12px"
-      src="https://open.spotify.com/embed/track/1VdZ0vKfR5jneCmWIUAMxK"
-      width="100%" height="152"
+    <h2>Our Playlist 💙</h2>
+    <iframe style="border-radius:16px"
+      src="https://open.spotify.com/embed/playlist/5G2HdYF950irfMO7UCa9FO"
+      width="100%"
+      height="380"
       frameBorder="0"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
     </iframe>
@@ -136,7 +150,7 @@ function openMemories() {
   modalContent.innerHTML = `
     <div style="text-align:center;">
       <img id="memoryImage"
-        src="\${images[current]}"
+        src="${images[current]}"
         style="width:100%; border-radius:16px; transition:0.5s ease;">
       
       <div style="margin-top:15px; display:flex; justify-content:center; gap:20px;">
@@ -159,4 +173,4 @@ function openMemories() {
       document.getElementById("memoryImage").src = images[current];
     }
   };
-          }
+}
