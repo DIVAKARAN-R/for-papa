@@ -127,7 +127,33 @@ ul li {
   flex-direction: column;
   gap: 1rem;
 }
+.modal-content {
+  border-radius: 20px;
+  animation: fadeIn 0.4s ease;
+}
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  border-radius: 24px;
+}
+
+button {
+  border-radius: 30px;
+}
+
+.gift {
+  border-radius: 18px;
+}
 .gift {
   padding: 1rem;
   background: var(--accent);
