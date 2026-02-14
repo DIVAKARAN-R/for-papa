@@ -1,3 +1,5 @@
+alert("Script Loaded Successfully");
+
 document.addEventListener("DOMContentLoaded", function () {
 
   // Screen Elements
